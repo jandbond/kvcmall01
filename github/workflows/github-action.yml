@@ -1,0 +1,98 @@
+name: github-action
+run-name: ${{ github.actor }} is out building GitHub Actions
+
+on:
+  push:
+    # Pattern matched against refs/tags
+    tags:        
+      - '**' 
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Build Maven Projects
+        run: |
+          mvn clean package -f ./purchase/pom.xml
+          mvn clean package -f ./voucher/pom.xml
+          mvn clean package -f ./customervoucher/pom.xml
+          mvn clean package -f ./payment/pom.xml
+          mvn clean package -f ./notification/pom.xml
+          mvn clean package -f ./mypage/pom.xml
+
+      - name: Docker Build and push for Purchase
+        uses: docker/build-push-action@v4
+        with:
+          context: ./purchase
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}/purchase:latest
+            ghcr.io/${{ github.repository }}/purchase:${{ github.ref_name }}
+            
+      - name: Docker Build and push for Voucher
+        uses: docker/build-push-action@v4
+        with:
+          context: ./voucher
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}/voucher:latest
+            ghcr.io/${{ github.repository }}/voucher:${{ github.ref_name }}
+            
+      - name: Docker Build and push for Customervoucher
+        uses: docker/build-push-action@v4
+        with:
+          context: ./customervoucher
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}/customervoucher:latest
+            ghcr.io/${{ github.repository }}/customervoucher:${{ github.ref_name }}
+            
+      - name: Docker Build and push for Payment
+        uses: docker/build-push-action@v4
+        with:
+          context: ./payment
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}/payment:latest
+            ghcr.io/${{ github.repository }}/payment:${{ github.ref_name }}
+            
+      - name: Docker Build and push for Notification
+        uses: docker/build-push-action@v4
+        with:
+          context: ./notification
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}/notification:latest
+            ghcr.io/${{ github.repository }}/notification:${{ github.ref_name }}
+            
+      - name: Docker Build and push for Mypage
+        uses: docker/build-push-action@v4
+        with:
+          context: ./mypage
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}/mypage:latest
+            ghcr.io/${{ github.repository }}/mypage:${{ github.ref_name }}
+            

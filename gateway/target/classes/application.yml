@@ -1,0 +1,100 @@
+server:
+  port: 8088
+
+---
+
+spring:
+  profiles: default
+  cloud:
+    gateway:
+#<<< API Gateway / Routes
+      routes:
+        - id: purchase
+          uri: http://localhost:8082
+          predicates:
+            - Path=/purchases/**, 
+        - id: voucher
+          uri: http://localhost:8083
+          predicates:
+            - Path=/vouchers/**, 
+        - id: customervoucher
+          uri: http://localhost:8084
+          predicates:
+            - Path=/customerVouchers/**, 
+        - id: payment
+          uri: http://localhost:8085
+          predicates:
+            - Path=/payments/**, 
+        - id: notification
+          uri: http://localhost:8086
+          predicates:
+            - Path=, 
+        - id: mypage
+          uri: http://localhost:8087
+          predicates:
+            - Path=, 
+        - id: frontend
+          uri: http://localhost:8080
+          predicates:
+            - Path=/**
+#>>> API Gateway / Routes
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+
+---
+
+spring:
+  profiles: docker
+  cloud:
+    gateway:
+      routes:
+        - id: purchase
+          uri: http://purchase:8080
+          predicates:
+            - Path=/purchases/**, 
+        - id: voucher
+          uri: http://voucher:8080
+          predicates:
+            - Path=/vouchers/**, 
+        - id: customervoucher
+          uri: http://customervoucher:8080
+          predicates:
+            - Path=/customerVouchers/**, 
+        - id: payment
+          uri: http://payment:8080
+          predicates:
+            - Path=/payments/**, 
+        - id: notification
+          uri: http://notification:8080
+          predicates:
+            - Path=, 
+        - id: mypage
+          uri: http://mypage:8080
+          predicates:
+            - Path=, 
+        - id: frontend
+          uri: http://frontend:8080
+          predicates:
+            - Path=/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+server:
+  port: 8080
