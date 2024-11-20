@@ -75,6 +75,30 @@ public class Payment {
         */
 
     }
+
+    //>>> Clean Arch / Port Method
+    //<<< Clean Arch / Port Method
+    public static void approvePayment(PurchaseRequested purchaseRequested) {
+        //implement business logic here:
+
+        /** Example 1:  new item 
+        Payment payment = new Payment();
+        repository().save(payment);
+
+        */
+
+        /** Example 2:  finding and process
+        
+        repository().findById(purchaseRequested.get???()).ifPresent(payment->{
+            
+            payment // do something
+            repository().save(payment);
+
+
+         });
+        */
+
+    }
     //>>> Clean Arch / Port Method
 
 }
