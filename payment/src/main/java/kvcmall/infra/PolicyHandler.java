@@ -40,5 +40,21 @@ public class PolicyHandler {
         // Sample Logic //
         Payment.cancelPayment(event);
     }
+
+    @StreamListener(
+        value = KafkaProcessor.INPUT,
+        condition = "headers['type']=='PurchaseRequested'"
+    )
+    public void wheneverPurchaseRequested_ApprovePayment(
+        @Payload PurchaseRequested purchaseRequested
+    ) {
+        PurchaseRequested event = purchaseRequested;
+        System.out.println(
+            "\n\n##### listener ApprovePayment : " + purchaseRequested + "\n\n"
+        );
+
+        // Sample Logic //
+        Payment.approvePayment(event);
+    }
 }
 //>>> Clean Arch / Inbound Adaptor
