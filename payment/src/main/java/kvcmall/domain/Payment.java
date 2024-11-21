@@ -57,6 +57,14 @@ public class Payment {
         paymentCancled.publishAfterCommit();
         */
 
+        Payment payment = new Payment();
+        payment.setPurchaseId(cancellationRequested.getId());
+        payment.setStatus("결제취소");
+        repository().save(payment);
+
+        PaymentCancled paymentCancled = new PaymentCancled(payment);
+        paymentCancled.publishAfterCommit();
+        
         /** Example 2:  finding and process
         
         repository().findById(cancellationRequested.get???()).ifPresent(payment->{
@@ -80,6 +88,11 @@ public class Payment {
     //<<< Clean Arch / Port Method
     public static void approvePayment(PurchaseRequested purchaseRequested) {
         //implement business logic here:
+        // 결제 승인 요청 추가
+        Payment payment = new Payment();
+        payment.setPurchaseId(purchaseRequested.getId());
+        payment.setStatus("결제승인");
+        repository().save(payment);
 
         /** Example 1:  new item 
         Payment payment = new Payment();

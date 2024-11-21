@@ -70,6 +70,16 @@ public class Purchase {
         paymentCompleted.publishAfterCommit();
         */
 
+        repository().findById(paymentApproved.getPurchaseId()).ifPresent(purchase->{
+            
+            purchase.setStatus("결제완료"); // do something
+            repository().save(purchase);
+
+            PaymentCompleted paymentCompleted = new PaymentCompleted(purchase);
+            paymentCompleted.publishAfterCommit();
+
+         });
+
         /** Example 2:  finding and process
         
         repository().findById(paymentApproved.get???()).ifPresent(purchase->{
@@ -97,6 +107,15 @@ public class Purchase {
         PaymentCanceled paymentCanceled = new PaymentCanceled(purchase);
         paymentCanceled.publishAfterCommit();
         */
+        repository().findById(paymentCancled.getPurchaseId()).ifPresent(purchase->{
+            
+            purchase.setStatus("결제취소"); // do something
+            repository().save(purchase);
+
+            PaymentCanceled paymentCanceled = new PaymentCanceled(purchase);
+            paymentCanceled.publishAfterCommit();
+
+         });
 
         /** Example 2:  finding and process
         

@@ -55,7 +55,13 @@ public class Voucher {
         repository().save(voucher);
 
         */
-
+        // Voucher 발행액 반영(+)
+        repository().findById(purchaseRequested.getVoucherId()).ifPresent(voucher->{
+            
+            Long purchaseAmt = voucher.currentIssuedAmount + purchaseRequested.getAmount();
+            voucher.setCurrentIssuedAmount(purchaseAmt); // do something
+            repository().save(voucher) ;
+        });
         /** Example 2:  finding and process
         
         repository().findById(purchaseRequested.get???()).ifPresent(voucher->{
@@ -81,6 +87,13 @@ public class Voucher {
         repository().save(voucher);
 
         */
+        // Voucher 발행액 반영(+-)
+        repository().findById(cancellationRequested.getVoucherId()).ifPresent(voucher->{
+            
+            Long purchaseAmt = voucher.currentIssuedAmount - cancellationRequested.getAmount();
+            voucher.setCurrentIssuedAmount(purchaseAmt); // do something
+            repository().save(voucher) ;
+        });
 
         /** Example 2:  finding and process
         

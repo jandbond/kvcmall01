@@ -49,6 +49,16 @@ public class CustomerVoucher {
     public static void issueVoucher(PaymentCompleted paymentCompleted) {
         //implement business logic here:
 
+        CustomerVoucher customerVoucher = new CustomerVoucher();
+        customerVoucher.setCustomerId(paymentCompleted.getCustomerId());
+        customerVoucher.setAmount(paymentCompleted.getAmount());
+        customerVoucher.setDate(paymentCompleted.getDate());
+        customerVoucher.setStatus("발행");
+        repository().save(customerVoucher);
+
+        VoucherIssued voucherIssued = new VoucherIssued(customerVoucher);
+        voucherIssued.publishAfterCommit();
+
         /** Example 1:  new item 
         CustomerVoucher customerVoucher = new CustomerVoucher();
         repository().save(customerVoucher);
@@ -84,6 +94,15 @@ public class CustomerVoucher {
         VoucherCanceled voucherCanceled = new VoucherCanceled(customerVoucher);
         voucherCanceled.publishAfterCommit();
         */
+
+        CustomerVoucher customerVoucher = new CustomerVoucher();
+        customerVoucher.setCustomerId(paymentCanceled.getCustomerId());
+        customerVoucher.setDate(paymentCanceled.getDate());
+        customerVoucher.setStatus("취소");
+        repository().save(customerVoucher);
+
+        VoucherIssued voucherIssued = new VoucherIssued(customerVoucher);
+        voucherIssued.publishAfterCommit();
 
         /** Example 2:  finding and process
         
