@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: voucher
-          image: "username/voucher:latest"
+          image: "user06.azurecr.io/voucher:1121"
           ports:
             - containerPort: 8080
           readinessProbe:
