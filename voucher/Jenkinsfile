@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         REGISTRY = 'user06.azurecr.io'
-        IMAGE_NAME = 'product'
+        IMAGE_NAME = 'voucher'
         AKS_CLUSTER = 'user06-aks'
         RESOURCE_GROUP = 'user06-rsrcgrp'
         AKS_NAMESPACE = 'default'
@@ -20,8 +20,10 @@ pipeline {
         
         stage('Maven Build') {
             steps {
-                withMaven(maven: 'Maven') {
-                    sh 'mvn package -DskipTests'
+                dir("${IMAGE_NAME}"){
+                    withMaven(maven: 'Maven') {
+                        sh 'mvn package -DskipTests'
+                    }
                 }
             }
         }
