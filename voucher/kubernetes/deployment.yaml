@@ -22,6 +22,12 @@ spec:
           resources:
             requests:
               cpu: "200m"  
+          env:
+            - name: CLASS 
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config
+                  key: class              
           volumeMounts:
           - mountPath: "/mnt/data"
             name: volume
